@@ -1,0 +1,27 @@
+syntax = "proto3";
+package grpc;
+
+option go_package = "github.com/abdullahjankhan/go_sample/proto";
+
+// define a service which will contain all the RPC functions you want 
+service SampleService {
+    // define a function 
+    rpc SampleFunc(SampleRequest) returns (SampleResponse) {};
+}
+
+// define SampleRequest and SampleResponse
+// like go lang structs we have message to define data type in a proto file
+// Read more about supported data types in proto at 
+// https://developers.google.com/protocol-buffers/docs/proto3
+
+message SampleRequest {
+    // defining a message structure
+    // format: datatype name = int;
+    // all the data member of message must be indexed 
+    string msg = 1;
+}
+
+message SampleResponse {
+    string msgRes = 1;
+}
+

@@ -1,0 +1,6 @@
+{
+    "sampleKey": "sampleValue",
+    "sampleKeyWithObject": {
+        "key_1": "value_1"
+    }
+}

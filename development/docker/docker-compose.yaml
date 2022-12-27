@@ -1,0 +1,13 @@
+# sample docker compose for postgres image
+version: "3.3"
+services:
+  postgres: # service name
+    image: "postgres" # image name from local / remote
+    container_name: postgres # define the container name you want
+    env_file: # export the env file
+      - database.env
+    volumes: # mount volumes
+      - ./postgres:/data/postgres
+    restart: always # restart policy
+    ports: # list of ports you want to expose, format EXTERNAL_PORT(System):INTERNAL_PORT(Docker)
+      - "5432:5432"
