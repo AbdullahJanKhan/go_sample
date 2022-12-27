@@ -35,3 +35,11 @@ func (data *SampleDataModle) Validate() error {
 }
 
 ```
+
+## Constants
+
+In the file named consts state all the constants you need. Divide the file in to multiple files as per your requirements.
+
+## Error
+
+I have included a standard error in models. It wraps the traditional error to a custom error.

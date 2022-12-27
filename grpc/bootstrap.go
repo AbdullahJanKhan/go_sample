@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/abdullahjankhan/go_sample/proto"
+	"github.com/abdullahjankhan/go_sample/service"
 	grpcmiddleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpcrecovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 
@@ -15,10 +16,10 @@ import (
 )
 
 // NewServer provides new grpc server according to configuration provided
-func NewServer(unaryInterceptors []grpc.UnaryServerInterceptor, streamInterceptors []grpc.StreamServerInterceptor) *grpc.Server {
+func NewServer(container *service.Container, unaryInterceptors []grpc.UnaryServerInterceptor, streamInterceptors []grpc.StreamServerInterceptor) *grpc.Server {
 	opts := []grpcrecovery.Option{
 		grpcrecovery.WithRecoveryHandlerContext(func(ctx context.Context, rec interface{}) (err error) {
-			// container.LoggerService.GetInstance().Fatalf("[gRPC|Server] Recovered in %v", rec)
+			container.LoggerService.GetInstance().Fatalf("[gRPC|Server] Recovered in %v", rec)
 
 			return status.Errorf(codes.Internal, "Recovered in %v", rec)
 		}),
@@ -49,18 +50,19 @@ func NewServer(unaryInterceptors []grpc.UnaryServerInterceptor, streamIntercepto
 }
 
 // StartServer create grpc instance and bind servies with grpc
-func StartServer() {
+func StartServer(container *service.Container) {
 
 	grpcServer := NewServer(
+		container,
 		nil,
 		nil,
 	)
 
-	sampleServiceServer := NewSampleGrpcServer()
+	sampleServiceServer := NewSampleGrpcServer(container)
 
 	proto.RegisterSampleServiceServer(grpcServer, sampleServiceServer)
 
-	go Start(grpcServer)
+	go Start(container, grpcServer)
 
-	// container.LoggerService.GetInstance().Info("rpc server ok")
+	container.LoggerService.GetInstance().Info("rpc server ok")
 }
