@@ -8,6 +8,9 @@ const (
 
 //  response message constants
 const (
-	Hashing_ERROR_MESSAGE = "Hasing error"
-	INVALID_TOKEN_MESSAGE = "Invalid JWT Token error"
+	Hashing_ERROR_MESSAGE   = "Hasing error"
+	INVALID_TOKEN_MESSAGE   = "Invalid JWT Token error"
+	REDIS_SET_ERROR_MESSAGE = "Redis Key Set Error"
+	REDIS_GET_ERROR_MESSAGE = "Redis Key Get Error"
+	REDIS_DEL_ERROR_MESSAGE = "Redis Key Delete Error"
 )
