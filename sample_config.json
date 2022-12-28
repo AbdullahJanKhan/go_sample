@@ -1,0 +1,48 @@
+{
+    "logLevel": "debug",
+    "logEnvironment": "local",
+    "dataSource": {
+        "driverName": "postgres",
+        "addr": "127.0.0.1",
+        "port": "5432",
+        "database": "dlc",
+        "user": "dlc",
+        "password": "dlc",
+        "enableAutoMigrate": true,
+        "retries": 3
+    },
+    "grpc": {
+        "addr": "127.0.0.1",
+        "port": "8060",
+        "serverMinTime": 6000000000,
+        "serverTime": 7200000000000,
+        "serverTimeOut": 20000000000
+    },
+    "redis": {
+        "addr": ":6379",
+        "password": ""
+    },
+    "kafka": {
+        "brokers": [
+            "localhost:9092"
+        ]
+    },
+    "jwtSecret": "flj23jfoi23apdl3jfslkj23za01mf3",
+    "restServer": {
+        "addr": ":8050"
+    },
+    "aragon": {
+        "aragonPepper": "pppppppppppppppp",
+        "aragonTime": 1,
+        "aragonMemory": 65536,
+        "aragonKeyLen": 64,
+        "aragonThreads": 16,
+        "aragonSaltLen": 4
+    },
+    "externalGrpc": {
+        "sampleGrpc": {
+            "addr": "127.0.0.1",
+            "port": "9002"
+        }
+    }
+}

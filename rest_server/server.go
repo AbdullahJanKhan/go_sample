@@ -10,10 +10,6 @@ import (
 	cors "github.com/rs/cors/wrapper/gin"
 )
 
-type Server struct {
-	Service service.Container
-}
-
 func StartServer() {
 	service := service.NewService()
 	controller := controller.NewController(service)
@@ -37,4 +33,7 @@ func StartServer() {
 	if err != nil {
 		panic(err)
 	}
+	service.Logger.Info("#==================================#")
+	service.Logger.Infof("#===== Server Running At: %v ====#", service.GlobalConfigService.GetConfig().RestServer.Addr)
+	service.Logger.Info("#==================================#")
 }

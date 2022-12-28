@@ -9,8 +9,8 @@ import (
 
 // gloabl constants
 var (
-	configPath     = "."         // path where the configuration file is stored
-	configFileName = "name.json" // configuration file name
+	configPath     = "."           // path where the configuration file is stored
+	configFileName = "config.json" // configuration file name
 )
 
 type GlobalConfig struct {
@@ -71,7 +71,7 @@ type Aragon struct {
 }
 
 type ExternalGrpc struct {
-	Sample GrpcConn `json:"sample"`
+	Sample GrpcConn `json:"sampleGrpc"`
 }
 
 type GrpcConn struct {
