@@ -5,9 +5,9 @@
         "driverName": "postgres",
         "addr": "127.0.0.1",
         "port": "5432",
-        "database": "dlc",
-        "user": "dlc",
-        "password": "dlc",
+        "database": "",
+        "user": "",
+        "password": "",
         "enableAutoMigrate": true,
         "retries": 3
     },
@@ -27,12 +27,12 @@
             "localhost:9092"
         ]
     },
-    "jwtSecret": "flj23jfoi23apdl3jfslkj23za01mf3",
+    "jwtSecret": "",
     "restServer": {
         "addr": ":8050"
     },
     "aragon": {
-        "aragonPepper": "pppppppppppppppp",
+        "aragonPepper": "",
         "aragonTime": 1,
         "aragonMemory": 65536,
         "aragonKeyLen": 64,
@@ -42,7 +42,7 @@
     "externalGrpc": {
         "sampleGrpc": {
             "addr": "127.0.0.1",
-            "port": "9002"
+            "port": "8060"
         }
     }
 }
