@@ -6,12 +6,12 @@ services:
     container_name: postgres
     image: postgres:latest
     environment:
-      POSTGRES_USER: dlc
-      POSTGRES_PASSWORD: dlc
+      POSTGRES_USER: USERNAME
+      POSTGRES_PASSWORD: PASSWORD
     ports:
       - "5432:5432"
   redis:
-    image: redis:6.2.3
+    image: redis
     container_name: redis_db
     command: redis-server --appendonly yes
     ports:
