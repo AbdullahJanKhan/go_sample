@@ -9,8 +9,8 @@ import (
 )
 
 type JWTService interface {
-	CreateToken(email, code string) (string, error)
-	VerifyToken(tokenStr string) (string, string, error)
+	CreateToken(id string) (string, error)
+	VerifyToken(tokenStr string) (string, error)
 }
 type jwtService struct {
 	configService GlobleConfigService
@@ -21,19 +21,18 @@ func NewJWTService(configService GlobleConfigService) JWTService {
 		configService: configService,
 	}
 }
-func (j *jwtService) CreateToken(email, code string) (string, error) {
+func (j *jwtService) CreateToken(uid string) (string, error) {
 
 	claim := jwt.MapClaims{
-		"email": email,
-		"code":  code,
-		"exp":   time.Now().Add(time.Minute * 30).Unix(),
+		"uid": uid,
+		"exp": time.Now().Add(time.Minute * 30).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claim)
 	secret := j.configService.GetConfig().JwtSecret
 	return token.SignedString([]byte(secret))
 }
 
-func (j *jwtService) VerifyToken(tokenStr string) (string, string, error) {
+func (j *jwtService) VerifyToken(tokenStr string) (string, error) {
 
 	secret := j.configService.GetConfig().JwtSecret
 	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
@@ -46,27 +45,22 @@ func (j *jwtService) VerifyToken(tokenStr string) (string, string, error) {
 			Line:        "VerifyToken():126",
 			Message:     models.INVALID_TOKEN_MESSAGE,
 		}
-		return "", "", stdErr
+		return "", stdErr
 	}
 
 	claim, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
-		return "", "", errors.New("cannot convert claim to MapClaims")
+		return "", errors.New("cannot convert claim to MapClaims")
 	}
 	if !token.Valid {
-		return "", "", errors.New("token is invalid")
+		return "", errors.New("token is invalid")
 	}
 
-	emailVal, found := claim["email"]
+	uidVal, found := claim["uid"]
 	if !found {
-		return "", "", errors.New("bad token")
+		return "", errors.New("bad token")
 	}
-	codeVal, found := claim["code"]
-	if !found {
-		return "", "", errors.New("bad token")
-	}
-	code := codeVal.(string)
-	email := emailVal.(string)
+	uid := uidVal.(string)
 
-	return email, code, nil
+	return uid, nil
 }

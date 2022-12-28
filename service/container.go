@@ -3,6 +3,7 @@ package service
 import (
 	"github.com/abdullahjankhan/go_sample/config"
 	"github.com/abdullahjankhan/go_sample/lib"
+	"github.com/abdullahjankhan/go_sample/repository/db_name"
 	"github.com/abdullahjankhan/go_sample/utils"
 )
 
@@ -12,9 +13,10 @@ type Container struct {
 	HashingService      HashingService
 	JWTService          JWTService
 	LoggerService       LoggerService
+	SampleService       SampleService
 }
 
-func NewServiceContainer() *Container {
+func NewService() *Container {
 	globalConfig := config.GetConfig()
 	globalConfigService := NewGbeConfigService()
 	_ = lib.GetHttpClient()
@@ -23,12 +25,16 @@ func NewServiceContainer() *Container {
 	hashingService := NewHashingService(nil, 0, 0, 0, 0, 0)
 	loggerService := NewLoggerService(globalConfig)
 
+	db := db_name.SharedStore()
+	sampleService := NewSampleService(db)
+
 	return &Container{
 		Logger:              logger,
 		GlobalConfigService: globalConfigService,
 		HashingService:      hashingService,
 		JWTService:          jwtService,
 		LoggerService:       loggerService,
+		SampleService:       sampleService,
 	}
 
 }

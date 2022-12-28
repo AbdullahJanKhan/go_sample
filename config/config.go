@@ -31,7 +31,6 @@ type GlobalConfig struct {
 
 type RestServerConfig struct {
 	Addr string `json:"addr"`
-	Port string `json:"port"`
 }
 
 type DataSourceConfig struct {
