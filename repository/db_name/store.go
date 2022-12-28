@@ -14,6 +14,9 @@ import (
 	"gorm.io/gorm"
 )
 
+// "gorm.io/driver/postgres"
+// We imported postgres as a db data source you can import any you like
+
 var gdb *gorm.DB
 var storeOnce sync.Once
 var store repository.Store
@@ -41,34 +44,33 @@ func NewStore(db *gorm.DB) *Store {
 }
 
 func initDb() error {
-	_ = config.GetConfig()
+	config := config.GetConfig()
 
-	postgresConf := &Config{
-		Host:      "cfg.PostDataSource.Addr",
-		Port:      "cfg.PostDataSource.Port",
-		DbName:    "cfg.PostDataSource.Database",
-		User:      "cfg.PostDataSource.User",
-		Password:  "cfg.PostDataSource.Password",
+	dbConf := &Config{
+		Host:      config.DataSource.Addr,
+		Port:      config.DataSource.Port,
+		DbName:    config.DataSource.Database,
+		User:      config.DataSource.User,
+		Password:  config.DataSource.Password,
 		SSLEnable: false,
 	}
-	retries := 3 //"cfg.PostDataSource.Retries"
-	log.Println(postgresConf)
+	retries := config.DataSource.Retries
+	dns := dbConf.MakeConnectString()
 	var err error
-	dsn := "host=localhost user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai"
-	gdb, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	gdb, err = gorm.Open(postgres.Open(dns), &gorm.Config{})
 	for err != nil {
 		log.Println(err, fmt.Sprintf("Failed to connect to database (%d)", retries))
 
 		if retries > 1 {
 			retries--
 			time.Sleep(5 * time.Second)
-			gdb, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+			gdb, err = gorm.Open(postgres.Open(dns), &gorm.Config{})
 
 			continue
 		}
 		panic(err)
 	}
-	if true { //"cfg.PostDataSource.EnableAutoMigrate" {
+	if config.DataSource.EnableAutoMigrate {
 		var tables = []interface{}{
 			// enter your modles you want to migrate to DB
 		}

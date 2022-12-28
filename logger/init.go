@@ -33,10 +33,10 @@ func Init(conf *config.GlobalConfig) {
 	logger_instance.SetLevel(logLevel)
 
 	//If we want to throw logs on the network, like redis
-	if "conf.LogEnvironment" == "network" {
+	if conf.Logger.LogEnvironment == "network" {
 		//we dont want to display logs in the output, just on the network
 		logger_instance.SetOutput(ioutil.Discard)
-	} else if "conf.LogEnvironment" == "local" { //If we want to throw logs into a local file
+	} else if conf.Logger.LogEnvironment == "local" { //If we want to throw logs into a local file
 
 		logger_instance.SetOutput(os.Stdout)
 		//setting it to a file writer

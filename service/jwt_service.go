@@ -13,12 +13,12 @@ type JWTService interface {
 	VerifyToken(tokenStr string) (string, string, error)
 }
 type jwtService struct {
-	gbeConfig GlobleConfigService
+	configService GlobleConfigService
 }
 
-func NewJWTService(gbeConfig GlobleConfigService) JWTService {
+func NewJWTService(configService GlobleConfigService) JWTService {
 	return &jwtService{
-		gbeConfig: gbeConfig,
+		configService: configService,
 	}
 }
 func (j *jwtService) CreateToken(email, code string) (string, error) {
@@ -29,13 +29,13 @@ func (j *jwtService) CreateToken(email, code string) (string, error) {
 		"exp":   time.Now().Add(time.Minute * 30).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claim)
-	secret := "j.gbeConfig.GetConfig().JwtSecret"
+	secret := j.configService.GetConfig().JwtSecret
 	return token.SignedString([]byte(secret))
 }
 
 func (j *jwtService) VerifyToken(tokenStr string) (string, string, error) {
 
-	secret := "j.gbeConfig.GetConfig().JwtSecret"
+	secret := j.configService.GetConfig().JwtSecret
 	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
 		return []byte(secret), nil
 	})

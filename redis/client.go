@@ -20,8 +20,8 @@ type client struct {
 
 func NewClient(conf *config.GlobalConfig) Client {
 	redisClient := redis.NewClient(&redis.Options{
-		Addr:     "conf.Redis.Addr",
-		Password: "conf.Redis.Password",
+		Addr:     conf.Redis.Addr,
+		Password: conf.Redis.Password,
 		DB:       1,
 	})
 	if redisClient == nil {

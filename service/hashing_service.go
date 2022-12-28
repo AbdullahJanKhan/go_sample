@@ -1,17 +1,3 @@
-// Copyright 2019 Cashero.com
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     https://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package service
 
 import (
@@ -36,18 +22,18 @@ type HashingService interface {
 }
 
 type hashingService struct {
-	format     string
-	version    int
-	time       uint32
-	memory     uint32
-	keyLen     uint32
-	saltLen    uint32
-	threads    uint8
-	gbeService GlobleConfigService
+	format        string
+	version       int
+	time          uint32
+	memory        uint32
+	keyLen        uint32
+	saltLen       uint32
+	threads       uint8
+	configService GlobleConfigService
 }
 
 func NewHashingService(
-	gbeService GlobleConfigService,
+	configService GlobleConfigService,
 	keyLen uint32,
 	memory uint32,
 	saltLen uint32,
@@ -55,14 +41,14 @@ func NewHashingService(
 	time uint32,
 ) HashingService {
 	return &hashingService{
-		format:     "$argon2id$v=%d$m=%d,t=%d,p=%d$%s$%s",
-		gbeService: gbeService,
-		keyLen:     keyLen,
-		memory:     memory,
-		saltLen:    saltLen,
-		threads:    threads,
-		time:       time,
-		version:    argon2.Version,
+		format:        "$argon2id$v=%d$m=%d,t=%d,p=%d$%s$%s",
+		configService: configService,
+		keyLen:        keyLen,
+		memory:        memory,
+		saltLen:       saltLen,
+		threads:       threads,
+		time:          time,
+		version:       argon2.Version,
 	}
 }
 
@@ -96,9 +82,9 @@ func (h *hashingService) HashWithSalt(plain, salt string) (string, error) {
 }
 
 func (h *hashingService) HashWithPepper(plain string) (string, error) {
-	_ = h.gbeService.GetConfig()
+	config := h.configService.GetConfig()
 
-	hash := argon2.IDKey([]byte(plain), []byte("gGbeConfig.Aragon.AragonPepper"), h.time, h.memory, h.threads, h.keyLen)
+	hash := argon2.IDKey([]byte(plain), []byte(config.Aragon.AragonPepper), h.time, h.memory, h.threads, h.keyLen)
 
 	return base64.RawStdEncoding.EncodeToString(hash), nil
 }
@@ -119,13 +105,13 @@ func (h *hashingService) SHA256(plain string) (string, error) {
 }
 
 func (h *hashingService) VerifyWithPepper(plain, hash string) (bool, error) {
-	_ = h.gbeService.GetConfig()
+	config := h.configService.GetConfig()
 	decodedHash, err := base64.RawStdEncoding.DecodeString(hash)
 	if err != nil {
 		return false, err
 	}
 
-	hashToCompare := argon2.IDKey([]byte(plain), []byte("gGbeConfig.Aragon.AragonPepper"), h.time, h.memory, h.threads, uint32(len(decodedHash)))
+	hashToCompare := argon2.IDKey([]byte(plain), []byte(config.Aragon.AragonPepper), h.time, h.memory, h.threads, uint32(len(decodedHash)))
 
 	return subtle.ConstantTimeCompare(decodedHash, hashToCompare) == 1, nil
 }

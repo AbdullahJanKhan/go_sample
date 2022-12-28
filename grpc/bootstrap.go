@@ -2,7 +2,6 @@ package grpc
 
 import (
 	"context"
-	"time"
 
 	"github.com/abdullahjankhan/go_sample/proto"
 	"github.com/abdullahjankhan/go_sample/service"
@@ -27,12 +26,12 @@ func NewServer(container *service.Container, unaryInterceptors []grpc.UnaryServe
 
 	server := grpc.NewServer(
 		grpc.KeepaliveEnforcementPolicy(keepalive.EnforcementPolicy{
-			MinTime:             time.Second * 30, // container.GbeConfigService.GetConfig().Grpc.ServerMinTime, // If a client pings more than once every 5 minutes, terminate the connection
-			PermitWithoutStream: true,             // Allow pings even when there are no active streams
+			MinTime:             container.GlobalConfigService.GetConfig().Grpc.ServerMinTime, // If a client pings more than once every 5 minutes, terminate the connection
+			PermitWithoutStream: true,                                                         // Allow pings even when there are no active streams
 		}),
 		grpc.KeepaliveParams(keepalive.ServerParameters{
-			Time:    time.Hour * 72,   // container.GbeConfigService.GetConfig().Grpc.ServerMinTime, // Ping the client if it is idle for 2 hours to ensure the connection is still active
-			Timeout: time.Minute * 30, // container.GbeConfigService.GetConfig().Grpc.ServerTimeOut, // Wait 20 second for the ping ack before assuming the connection is dead
+			Time:    container.GlobalConfigService.GetConfig().Grpc.ServerMinTime, // Ping the client if it is idle for 2 hours to ensure the connection is still active
+			Timeout: container.GlobalConfigService.GetConfig().Grpc.ServerTimeOut, // Wait 20 second for the ping ack before assuming the connection is dead
 		}),
 		grpcmiddleware.WithUnaryServerChain(
 			append([]grpc.UnaryServerInterceptor{
