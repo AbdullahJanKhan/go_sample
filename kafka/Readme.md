@@ -19,10 +19,10 @@ Kafka Provides a Producer and Consumer. A producer is also knows as a log / mess
 
 ### Queueing
 
-![Kafka queueing architecture](images/queueing.png "queueing")
+![Kafka queueing architecture](../images/queueing.png "queueing")
 
 ### Pub Sub
 
-![Kafka pub sub architecture](images/pubsub.png "publish and subscribe")
+![Kafka pub sub architecture](../images/pubsub.png "publish and subscribe")
 
 `Readmore: https://aws.amazon.com/msk/what-is-kafka/`
