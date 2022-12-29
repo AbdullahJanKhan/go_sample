@@ -1,6 +1,8 @@
 {
-    "logLevel": "debug",
-    "logEnvironment": "local",
+    "logger": {
+        "logLevel": "debug",
+        "logEnvironment": "local"
+    },
     "dataSource": {
         "driverName": "postgres",
         "addr": "127.0.0.1",
