@@ -1,1 +1,3 @@
 config.json
+./development/docker/data
+./development/docker/zk-single-kafka-single
