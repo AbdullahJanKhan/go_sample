@@ -10,8 +10,7 @@ import (
 	cors "github.com/rs/cors/wrapper/gin"
 )
 
-func StartServer() {
-	service := service.NewService()
+func StartServer(service *service.Container) {
 	controller := controller.NewController(service)
 	middleware := NewMiddleware(service.JWTService)
 	gin.SetMode(gin.ReleaseMode)

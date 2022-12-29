@@ -1,13 +1,93 @@
-# sample docker compose for postgres image
+# Specify the version for docker-compose.yml
 version: "3.3"
+
 services:
-  postgres: # service name
-    image: "postgres" # image name from local / remote
-    container_name: postgres # define the container name you want
-    env_file: # export the env file
-      - database.env
-    volumes: # mount volumes
-      - ./postgres:/data/postgres
-    restart: always # restart policy
-    ports: # list of ports you want to expose, format EXTERNAL_PORT(System):INTERNAL_PORT(Docker)
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: USERNAME
+      POSTGRES_PASSWORD: PASSWORD
+    ports:
       - "5432:5432"
+  redis:
+    image: redis
+    container_name: redis_db
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    logging:
+      driver: none
+    volumes:
+      - ./data:/data
+    restart: always
+  zoo1:
+    image: zookeeper:3.4.9
+    hostname: zoo1
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_PORT: 2181
+      ZOO_SERVERS: server.1=zoo1:2888:3888
+      ZOOKEEPER_CLIENT_PORT: 32181
+    logging:
+      driver: none
+    volumes:
+      - ./zk-single-kafka-single/zoo1/data:/data
+      - ./zk-single-kafka-single/zoo1/datalog:/datalog
+  kafka1:
+    image: confluentinc/cp-kafka:5.3.1
+    hostname: kafka
+    container_name: kafka
+    ports:
+      - "9092:9092"
+      - "19092:19092"
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka1:19092,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_BROKER_ID: 1
+      KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    logging:
+      driver: none
+    volumes:
+      - ./zk-single-kafka-single/kafka1/data:/var/lib/kafka/data
+    depends_on:
+      - zoo1
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.0.1
+    container_name: elasticsearch
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - ELASTIC_PASSWORD=123change...
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - path.data=/usr/share/elasticsearch/data
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./elasticsearch/config/elasticsearch.yml:/home/abdullah-jan/Desktop/Learning/restApi/elasticsearch/config/elasticsearch.yml
+      - ./elasticsearch/data:/usr/share/elasticsearch/data
+  mongo:
+    image: mongo
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+  mongo-express:
+    image: mongo-express
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
