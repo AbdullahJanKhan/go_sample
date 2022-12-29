@@ -1,1 +1,115 @@
-All logs are output here
+All logs are output here{
+  "level": "info",
+  "msg": "Logrus has been initiated",
+  "time": "2022-12-29T12:50:25+05:00"
+}
+{
+  "level": "info",
+  "msg": "Logrus has been initiated",
+  "time": "2022-12-29T12:50:26+05:00"
+}
+{
+  "level": "info",
+  "msg": "#==================================#",
+  "time": "2022-12-29T12:50:26+05:00"
+}
+{
+  "level": "info",
+  "msg": "#===========Starting Server =======#",
+  "time": "2022-12-29T12:50:26+05:00"
+}
+{
+  "level": "info",
+  "msg": "#==================================#",
+  "time": "2022-12-29T12:50:26+05:00"
+}
+{
+  "level": "info",
+  "msg": "#==================================#",
+  "time": "2022-12-29T12:50:26+05:00"
+}
+{
+  "level": "info",
+  "msg": "#===========Rest Server @localhost::8050 =======#",
+  "time": "2022-12-29T12:50:26+05:00"
+}
+{
+  "level": "info",
+  "msg": "#==================================#",
+  "time": "2022-12-29T12:50:26+05:00"
+}
+{
+  "level": "info",
+  "msg": "#==================================#",
+  "time": "2022-12-29T12:50:26+05:00"
+}
+{
+  "level": "info",
+  "msg": "#=========== Starting Kafka Reader =======#",
+  "time": "2022-12-29T12:50:26+05:00"
+}
+{
+  "level": "info",
+  "msg": "#==================================#",
+  "time": "2022-12-29T12:50:26+05:00"
+}
+{
+  "level": "info",
+  "msg": "#===============Kafka Reader Started===================#",
+  "time": "2022-12-29T12:50:26+05:00"
+}
+{
+  "level": "info",
+  "msg": "#==================================#",
+  "time": "2022-12-29T12:50:26+05:00"
+}
+{
+  "level": "info",
+  "msg": "#=========== Starting gRPC Server =======#",
+  "time": "2022-12-29T12:50:26+05:00"
+}
+{
+  "level": "info",
+  "msg": "#==================================#",
+  "time": "2022-12-29T12:50:26+05:00"
+}
+{
+  "level": "info",
+  "msg": ":newSampleLogReader started read",
+  "time": "2022-12-29T12:50:26+05:00"
+}
+{
+  "level": "info",
+  "msg": "rpc server ok",
+  "time": "2022-12-29T12:50:26+05:00"
+}
+{
+  "level": "info",
+  "msg": "#=========== gRPC Server Started =======#",
+  "time": "2022-12-29T12:50:26+05:00"
+}
+{
+  "level": "info",
+  "msg": "initializing kafka reader for partition %d of %s starting at offset %d \t [0 sample_requets first offset]",
+  "time": "2022-12-29T12:50:26+05:00"
+}
+{
+  "level": "info",
+  "msg": "the kafka reader for partition %d of %s is seeking to offset %d \t [0 sample_requets 0]",
+  "time": "2022-12-29T12:50:26+05:00"
+}
+{
+  "level": "info",
+  "msg": "looking up offset of kafka reader for partition %d of %s: %s \t [0 sample_requets first offset]",
+  "time": "2022-12-29T12:50:26+05:00"
+}
+{
+  "level": "info",
+  "msg": "no messages received from kafka within the allocated time for partition %d of %s at offset %d \t [0 sample_requets 0]",
+  "time": "2022-12-29T12:50:35+05:00"
+}
+{
+  "level": "info",
+  "msg": "no messages received from kafka within the allocated time for partition %d of %s at offset %d \t [0 sample_requets 0]",
+  "time": "2022-12-29T12:50:44+05:00"
+}

@@ -24,7 +24,7 @@ func Init(conf *config.GlobalConfig) {
 	logger_instance.SetFormatter(&log.JSONFormatter{PrettyPrint: true})
 
 	//getting the log level set in the configuration file
-	logLevel, err := log.ParseLevel("info" /* pass the log level you want to set*/)
+	logLevel, err := log.ParseLevel(conf.Logger.LogLevel /* pass the log level you want to set, e.g. "info" */)
 	//If the log level in conf file can't be parsed, log level should be the default info level
 	if err != nil {
 		logLevel = log.InfoLevel
