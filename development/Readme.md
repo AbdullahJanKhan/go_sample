@@ -21,3 +21,4 @@ POSTGRES_PASSWORD=password
 POSTGRES_DB=db
 
 ```
+Similarly you can use the same structure at other points in a docker compose file.
